@@ -24,11 +24,11 @@ func bot_main_loop(bot *telego.Bot, password *string){
 	for update := range updates {
 		if update.Message != nil {
 			chatID := update.Message.Chat.ID
-			
+
 			*password = update.Message.Text
 			_, _ = bot.SendMessage(tu.Message(
 				tu.ID(chatID),
-				fmt.Sprint("You pass is:  ", *password),
+				settings_bot(*password),
 			))
 
 		}
