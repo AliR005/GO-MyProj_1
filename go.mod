@@ -10,6 +10,7 @@ require (
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/fasthttp/router v1.5.2 // indirect
 	github.com/grbit/go-json v0.11.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/mymmrac/telego v0.31.2 // indirect

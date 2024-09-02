@@ -1,26 +1,29 @@
 package main
 
 import (
-	"os"
 	"crypto/md5"
 	"encoding/hex"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
 )
 
-func main(){
+func main() {
 	var password string = "NULL"
 	init_bot(&password)
-	
-
 
 }
 
-func init_bot(password *string){
-	TOKEN := os.Getenv("TOKEN_BOT")
+func init_bot(password *string) {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("No .env file found")
+	}
+	TOKEN, _ := os.LookupEnv("TOKEN")
 	bot := create_bot(TOKEN)
 	bot_main_loop(bot, password)
 }
 
-func settings_bot(password string) string{
+func settings_bot(password string) string {
 	return GetMd5(password)
 }
 
