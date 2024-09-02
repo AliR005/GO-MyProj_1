@@ -26,13 +26,14 @@ func init_bot(password *string) {
 }
 
 func settings_bot(password string) string {
-
 	for key, value := range map_hashs {
 		if GetMd5(password) == key {
 			return value
+		} else if password == value {
+			return key
 		}
 	}
-	return fmt.Sprint("Password \"", 1234, "\" does not exist ")
+	return fmt.Sprint("Password/hash \"", password, "\" does not exist ")
 }
 
 func GetMd5(text string) string {

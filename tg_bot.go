@@ -8,17 +8,17 @@ import (
 	tu "github.com/mymmrac/telego/telegoutil"
 )
 
-func create_bot(token string) *telego.Bot{
+func create_bot(token string) *telego.Bot {
 	bot, err := telego.NewBot(token, telego.WithDefaultDebugLogger())
-	if err != nil{
+	if err != nil {
 		fmt.Println(err)
 		log.Fatal("token is not specified")
 	}
 	return bot
 }
 
-func bot_main_loop(bot *telego.Bot, password *string){
-	updates , _ := bot.UpdatesViaLongPolling(nil)
+func bot_main_loop(bot *telego.Bot, password *string) {
+	updates, _ := bot.UpdatesViaLongPolling(nil)
 	defer bot.StopLongPolling()
 
 	for update := range updates {
