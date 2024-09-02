@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -10,6 +8,7 @@ import (
 
 func main() {
 	var password string = "NULL"
+	append_map()
 	init_bot(&password)
 
 }
@@ -25,10 +24,4 @@ func init_bot(password *string) {
 
 func settings_bot(password string) string {
 	return GetMd5(password)
-}
-
-func GetMd5(text string) string {
-	h := md5.New()
-	h.Write([]byte(text))
-	return hex.EncodeToString(h.Sum(nil))
 }
