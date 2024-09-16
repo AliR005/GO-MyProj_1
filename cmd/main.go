@@ -3,6 +3,7 @@ package main
 import (
 	"NewProj1/internal/config"
 	"NewProj1/internal/domain/bot"
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 )
@@ -16,4 +17,5 @@ func init() {
 func main() {
 	cfg := config.New()
 	bot.StartBot(cfg.App)
+	fmt.Println("test")
 }
