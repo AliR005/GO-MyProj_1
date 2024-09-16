@@ -2,6 +2,7 @@ package bot
 
 import (
 	"NewProj1/internal/config"
+	"NewProj1/internal/service"
 	"fmt"
 	"github.com/mymmrac/telego"
 	tu "github.com/mymmrac/telego/telegoutil"
@@ -22,7 +23,7 @@ func StartBot(cfg config.App) {
 		if update.Message != nil {
 			chatID := update.Message.Chat.ID
 
-			password := update.Message.Text
+			password := service.TextProcessing(chatID, update.Message.Text)
 			_, _ = bot.SendMessage(tu.Message(
 				tu.ID(chatID),
 				password,
