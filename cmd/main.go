@@ -1,11 +1,12 @@
 package main
 
 import (
+	"NewProj1/internal/client/bot"
 	"NewProj1/internal/config"
-	"NewProj1/internal/domain/bot"
 	"NewProj1/internal/service/utils"
-	"github.com/joho/godotenv"
 	"log"
+
+	"github.com/joho/godotenv"
 )
 
 func init() {
@@ -17,5 +18,5 @@ func init() {
 func main() {
 	cfg := config.New()
 	utils.AppendMap()
-	bot.StartBot(cfg.App)
+	bot.StartBot(cfg.App, cfg.Postgres)
 }
