@@ -32,14 +32,14 @@ func (p *postgres) AppendMessage(user *models.User) error{
 }
 
 
-func (p *postgres) ReturnIdMin(user *models.User) int{
+func (p *postgres) ReturnIdMin() int{
     res := p.db.QueryRow(fmt.Sprintf(`select %s(%s) from limitchat`, "min", "id"))
     var id int
     res.Scan(&id)
     return id
 }
 
-func (p *postgres) ReturnIdMax(user *models.User) int{
+func (p *postgres) ReturnIdMax() int{
     res := p.db.QueryRow(fmt.Sprintf(`select %s(%s) from limitchat`, "max", "id"))
     var id int
     res.Scan(&id)

@@ -11,14 +11,14 @@ type postgres struct {
 	db *sql.DB
 }
 
-func dsn(cfg config.Postgres) string {
+func dsn1(cfg config.Postgres) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.DBName, cfg.SSL,
 	)
 }
 
 func New(cfg config.Postgres) (repositories.DB, error) {
-	db, err := sql.Open("postgres", dsn(cfg))
+	db, err := sql.Open("postgres", dsn1(cfg))
 	if err != nil {
 		return nil, fmt.Errorf("failed to open the database driver: %v", err)
 	}

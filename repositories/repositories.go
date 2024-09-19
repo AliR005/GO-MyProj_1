@@ -12,6 +12,6 @@ type DB interface {
 type User interface {
 	CreateTable() error
 	AppendMessage(user *models.User) error
-	ReturnIdMin(user *models.User) int
-	ReturnIdMax(user *models.User) int
+	ReturnIdMin() int
+	ReturnIdMax() int
 }
