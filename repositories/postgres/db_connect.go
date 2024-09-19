@@ -23,7 +23,7 @@ func connectDB (cfg config.Postgres) string{
 
 func createTable(db *sql.DB){
     _, err := db.Exec(`create table if not exists limitchat (
-    ID integer primary key,
+    ID smallserial primary key,
     chatID VARCHAR(20),
     timeMessage time
     )`)

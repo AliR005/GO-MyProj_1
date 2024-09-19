@@ -2,6 +2,7 @@ package service
 
 import (
 	"NewProj1/internal/config"
+	"NewProj1/internal/domain/models"
 	"NewProj1/repositories/postgres"
 	"strconv"
 	"strings"
@@ -11,28 +12,31 @@ import (
 	"fmt"
 )
 
+var userNow *models.User
+var now time.Time
 
-func TextProcessing(password, chatID string, cfgDB config.Postgres) string {
-	sendMess := handlersDataForTable(chatID, cfgDB)
+func TextProcessing(chatID, pass string, cfgDB config.Postgres) string {
+	now = time.Now()
+	userNow = models.New(postgres.ReturnId("max", "id", cfgDB), chatID, fmt.Sprintf("%v:%v", now.Hour(), now.Minute()))
+	sendMess := appendDataForTable(cfgDB)
+	
 	if sendMess {
 		for key, value := range utils.MapHash {
-			if utils.GetMd5(password) == key {
+			if utils.GetMd5(pass) == key {
 				return value
-			} else if password == value {
+			} else if pass == value {
 				return key
 			}
 		}
-		return fmt.Sprint("Password/hash \"", password, "\" does not exist")
+		return fmt.Sprint("Password/hash \"", pass, "\" does not exist")
 	} else {
 		return "Query time has expired"
 	}
 }
 
-func handlersDataForTable(chatID string, cfgDB config.Postgres) bool {
-	var id int = postgres.ReturnId("max", "id", cfgDB)
-	now := time.Now()
-	hour, minute := fmt.Sprint(now.Hour()), fmt.Sprint(now.Minute())
-	postgres.InitDB(id+1, chatID, fmt.Sprintf("%s:%s", hour, minute), cfgDB)
+
+func appendDataForTable(cfgDB config.Postgres) bool {
+	postgres.InitDB(userNow.ID+1, userNow.ChatID, userNow.MessageTime, cfgDB)
 
 	var sendMess bool = timeMess(now, cfgDB)
 	if sendMess {

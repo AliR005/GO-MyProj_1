@@ -22,7 +22,7 @@ func StartBot(cfg config.App, cfgDB config.Postgres) {
 	for update := range updates {
 		if update.Message != nil {
 			chatID := update.Message.Chat.ID
-
+			
 			password := service.TextProcessing(fmt.Sprint(chatID), update.Message.Text, cfgDB)
 			_, _ = bot.SendMessage(tu.Message(
 				tu.ID(chatID),
