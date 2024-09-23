@@ -18,25 +18,30 @@ func StartBot(cfg config.App, cfgDB config.Postgres, cfgMQ config.RabbitMQ) {
 		log.Fatal("Token is not specified")
 	}
 
+	var chatID int64
 	publisher := rabbitmq.NewPublisher(cfgMQ)
+	defer publisher.Close()
 	consumer := rabbitmq.NewConsumer(cfgMQ)
+	defer consumer.Close()
+	
 
 	updates, _ := bot.UpdatesViaLongPolling(nil)
 	defer bot.StopLongPolling()
 
 	for update := range updates {
 		if update.Message != nil {
-			chatID := update.Message.Chat.ID
+			chatID = update.Message.Chat.ID
 
 			password := service.TextProcessing(fmt.Sprint(chatID), update.Message.Text, cfgDB)
 			publisher.Publish(password)
-			consumer.Start(bot, chatID)
+			
 
 			_, _ = bot.SendMessage(tu.Message(
 				tu.ID(chatID),
 				"Ваш запрос отправлен:)",
 			))
+			go consumer.Start(bot, chatID)
 		}
 	}
-
+	
 }

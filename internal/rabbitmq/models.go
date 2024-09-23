@@ -66,3 +66,9 @@ func (c *Consumer) Start(bot *telego.Bot, chatID int64) {
     }
 }
 
+func (c *Consumer) Close() {
+	if err := c.Channel.Close(); err != nil {
+		log.Printf("Failed to close consumer channel: %s", err)
+	}
+}
+
