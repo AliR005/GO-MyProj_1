@@ -8,6 +8,7 @@ type (
 	Config struct {
 		App      App
 		Postgres Postgres
+		RabbitMQ RabbitMQ
 	}
 
 	App struct {
@@ -22,6 +23,11 @@ type (
 		Password string
 		DBName   string
 		SSL      string
+	}
+
+	RabbitMQ struct {
+		URI      string
+    	QueueName string
 	}
 )
 
@@ -38,6 +44,11 @@ func New() *Config {
 			Password: getEnv("BOT_POSTGRES_PASSWORD", ""),
 			DBName:   getEnv("BOT_POSTGRES_DBNAME", "messageTime"),
 			SSL:      getEnv("BOT_POSTGRES_SSL_MODE", "disable"),
+		},
+
+		RabbitMQ: RabbitMQ{
+			URI:      getEnv("RABBITMQ_URI", "amqp://guest:guest@localhost:5672/"),
+            QueueName: getEnv("RABBITMQ_QUEUE", "telegram_queue"),
 		},
 	}
 }

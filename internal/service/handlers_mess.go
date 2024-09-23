@@ -18,7 +18,9 @@ var now time.Time
 func TextProcessing(chatID, pass string, cfgDB config.Postgres) string {
 	now = time.Now()
 	userNow = models.New(postgres.ReturnId("max", "id", cfgDB), chatID, fmt.Sprintf("%v:%v", now.Hour(), now.Minute()))
-	sendMess := appendDataForTable(cfgDB)
+
+	postgres.InitDB(userNow.ID+1, userNow.ChatID, userNow.MessageTime, cfgDB)
+	sendMess := timeMess(now, cfgDB)
 	
 	if sendMess {
 		for key, value := range utils.MapHash {
@@ -33,19 +35,6 @@ func TextProcessing(chatID, pass string, cfgDB config.Postgres) string {
 		return "Query time has expired"
 	}
 }
-
-
-func appendDataForTable(cfgDB config.Postgres) bool {
-	postgres.InitDB(userNow.ID+1, userNow.ChatID, userNow.MessageTime, cfgDB)
-
-	var sendMess bool = timeMess(now, cfgDB)
-	if sendMess {
-		return true
-	} else {
-		return false
-	}
-}
-
 
 func timeMess(now time.Time, cfgDB config.Postgres) bool {
 	var id_min int = postgres.ReturnId("min", "id", cfgDB)

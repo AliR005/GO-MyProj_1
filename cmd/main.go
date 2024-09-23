@@ -18,5 +18,6 @@ func init() {
 func main() {
 	cfg := config.New()
 	utils.AppendMap()
-	bot.StartBot(cfg.App, cfg.Postgres)
+	bot.StartBot(cfg.App, cfg.Postgres, cfg.RabbitMQ)
+
 }
