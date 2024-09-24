@@ -18,12 +18,5 @@
                 RABBITMQ_DEFAULT_USER=user
                 RABBITMQ_DEFAULT_PASS=password
                 
-        3) Скачайьте след. верисию образа RabbitMQ:
-            docker pull rabbitmq:3-management
-
-        4) Запустите контейнер с RabbitMQ:
-            docker run -d --name cont_rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
-
-        5) Находясь в папке 'cmd', откройте терминал и пропишите в нём 'go run .'
-
-        6) Наслаждайтесь ботом)
+        3) Пропишите в терминале в коревой директории 'docker-compose up'
+        4) Наслаждайтесь ботом)
