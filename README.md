@@ -13,7 +13,7 @@
                 BOT_POSTGRES_DBNAME=tgbotmessages
                 BOT_POSTGRES_SSL_MODE=disable
 
-                RABBITMQ_URI=amqp://guest:guest@localhost:5672/
+                RABBITMQ_URI=amqp://guest:guest@rabbitmq/
                 RABBITMQ_QUEUE=telegram_queue
                 RABBITMQ_DEFAULT_USER=user
                 RABBITMQ_DEFAULT_PASS=password
