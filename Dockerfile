@@ -1,12 +1,9 @@
-FROM golang:1.23-alpine
+FROM golang:latest
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+COPY ./ ./
+COPY ./cmd/.env ./
 
-COPY . .
-
-RUN cd cmd
-CMD [ "go run ." ]
+RUN go build -o main ./cmd
+CMD [ "./main" ]

@@ -5,11 +5,13 @@ services:
     image: postgres:latest
     container_name: postgres_container
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: roottoor
-      POSTGRES_DB: tgbotmessages
+      POSTGRES_USER: ${BOT_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${BOT_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${BOT_POSTGRES_DBNAME}
     ports:
       - "5430:5432"
+    networks:
+      - networkBot
     
   rabbitmq:
     image: rabbitmq:3-management
@@ -18,20 +20,26 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - networkBot
   
   bot:
     build:
       context: ./
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: roottoor
-      DB_NAME: tgbotmessages
-      RABBITMQ_URL: rabbitmq://rabbitmq:5672/
+      DB_HOST: ${BOT_POSTGRES_HOST}
+      DB_PORT: ${BOT_POSTGRES_PORT}
+      DB_USER: ${BOT_POSTGRES_USERNAME}
+      DB_PASSWORD: ${BOT_POSTGRES_PASSWORD}
+      DB_NAME: ${BOT_POSTGRES_DBNAME}
+      RABBITMQ_URL: ${RABBITMQ_URI}
+    networks:
+      - networkBot
 
     depends_on:
       - postgres
       - rabbitmq
+  networks:
+    etworkBot:

@@ -5,7 +5,6 @@ import (
 	"NewProj1/internal/domain/models"
 	"NewProj1/repositories/postgres"
 	"strconv"
-	"strings"
 	"time"
 
 	"NewProj1/internal/service/utils"
@@ -37,24 +36,27 @@ func TextProcessing(chatID, pass string, cfgDB config.Postgres) string {
 }
 
 func timeMess(now time.Time, cfgDB config.Postgres) bool {
-	var id_min int = postgres.ReturnId("min", "id", cfgDB)
 	var id_max int = postgres.ReturnId("max", "id", cfgDB)
-	var time_min []string = strings.Split((postgres.ReturnVal("min", "timemessage", cfgDB)), ":")
-	var time_max []string = strings.Split((postgres.ReturnVal("max", "timemessage", cfgDB)), ":")
-
-	hour_min, _ := strconv.Atoi(time_min[0])
-	minute_min, _ := strconv.Atoi(time_min[1])
-	hour_max, _ := strconv.Atoi(time_max[0])
-	minute_max, _ := strconv.Atoi(time_max[1])
-
-	now_hour, _ := strconv.Atoi(fmt.Sprint(now.Hour()))
-	if id_max-id_min >= 10 && (hour_max-hour_min >= 1 || (hour_max == hour_min-1 && minute_max == minute_min)) {
-		return true
-	} else if id_max-id_min >= 10 {
-		return false
-	}
-	if ((now_hour-hour_max == 1 && minute_max == minute_min) || now_hour-hour_max >= 1) && id_max > 10 {
+	parsedTimeMin, err_1 := time.Parse(time.RFC3339, postgres.ReturnVal("min", "timemessage", cfgDB))
+	if err_1 != nil{
+		fmt.Println("Error in process time!!!")
 		postgres.ClearTable(cfgDB)
 	}
+
+	hour_min := parsedTimeMin.Hour()
+	minute_min := parsedTimeMin.Minute()
+
+
+	hour_now, _ := strconv.Atoi(fmt.Sprint(now.Hour()))
+	minute_now, _ := strconv.Atoi(fmt.Sprint(now.Minute()))
+
+	if id_max > 10 || (hour_now - hour_min > 1 || (hour_now - hour_min == 1 && minute_now >= minute_min)){
+		postgres.ClearTable(cfgDB)
+	} else if id_max <= 10 {
+		return true
+	} else {
+		return false
+	}
+
 	return true
 }

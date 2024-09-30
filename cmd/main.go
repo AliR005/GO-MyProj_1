@@ -5,12 +5,14 @@ import (
 	"NewProj1/internal/config"
 	"NewProj1/internal/service/utils"
 	"log"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
 
 func init() {
-	if err := godotenv.Load(); err != nil {
+	envPath := filepath.Join("..", ".env")
+	if err := godotenv.Load(envPath); err != nil {
 		log.Fatal("No .env file found")
 	}
 }
